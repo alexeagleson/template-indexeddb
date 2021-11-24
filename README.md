@@ -4,18 +4,21 @@ Clone the repository and serve the `index.html` file.
 
 See [here](#browsing-your-database) for instructions on how to view the sample data in the browser.
 
-Continue below for the complete text of the blog tutorial, or follow along [ADD BLOG LINK]().
+Continue below for the complete text of the blog tutorial, or follow along [here](https://dev.to/alexeagleson/how-to-use-indexeddb-to-store-data-for-your-web-application-in-the-browser-1o90).
 
 # Full Tutorial
 
+If you would like to fork this project, the code and tutorial is available on [Github](https://github.com/alexeagleson/template-indexeddb).
+
 If you are interested in a video version of this tutorial, check out the link below. You can follow along with the code in this blog.  _(The video is entirely optional, every step and instruction is covered in the blog post.)_
 
-![Video goes here]()
+[![IndexedDB Tutorial](https://img.youtube.com/vi/yZ26CXny3iI/0.jpg)](https://youtu.be/yZ26CXny3iI)
 
 1. [What is IndexedDB?](#what-is-indexeddb)
 1. [Important Terms](#important-terms)
 1. [How to use IndexedDB](#how-to-use-indexeddb)
 1. [Browsing your Database](#browsing-your-database)
+1. [Updating and Removing Data](#updating-and-removing-data)
 1. [Limitations](#limitations)
 1. [Further Learning](#further-learning)
 1. [Wrapping Up](#wrapping-up)
