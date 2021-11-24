@@ -8,7 +8,7 @@ Continue below for the complete text of the blog tutorial, or follow along [ADD 
 
 # Full Tutorial
 
-# If you are interested in a video version of this tutorial, check out the link below. You can follow along with the code in this blog.  _(The video is entirely optional, every step and instruction is covered in the blog post.)_
+If you are interested in a video version of this tutorial, check out the link below. You can follow along with the code in this blog.  _(The video is entirely optional, every step and instruction is covered in the blog post.)_
 
 ![Video goes here]()
 
@@ -37,16 +37,6 @@ IndexedDB is supported in most modern browsers and allows you to  store up to 50
 
 A database is an _organized_ collection of data.  Whereas something comparable like the hard drive on your computer might be optimized to store large amounts of mostly unorganized data that is searched occasionally, a database instead assumes the data will be searched for frequently and is optimized to make sure these searches are as fast as possible.
 
-### Cursor
-
-A _cursor_ represents your current position when viewing the data in your database.  Cursors in IndexedDB can be used on entire object stores or even indexes that have been limited to a certain type of documents.  They offer the ability to iterate from one document to the next within the database rather than having to query all the data and store it in memory on the client application (in this case, our Javascript program).
-
-### Transaction
-
-A _transaction_ in database context is an operation or multiple operations that must all run successfully, otherwise none of them will be run at all.  
-
-To understand why transactions are necessary, the most common example is transferring money between accounts in a bank database.  A transfer operation includes both `remove money` from one account and `add money` to another.  If the `add money` operation fails for any reason, you also need the `remove money` operation to fail as well, otherwise you would end up with a pretty nasty scenario where the money is simply "gone".
-
 ### Schema
 
 The _schema_ of your database refers to the shape of your data.  For example we will be using a database that keeps track of _cars_ in our example.  There are endless different pieces of information you could imagine that relate to cars: colour, make, model, condition, trim, VIN, year, etc.
@@ -62,6 +52,16 @@ At the end of a book an index is a map of words to page numbers.  They allow you
 The concept is exactly the same for computers.  When looking at a huge database, without any index, your search will start at the very beginning and look at absolutely everything until it finds what it's looking for.  Adding an _index_ will create a structure in memory that makes those lookups faster and easier.  An index takes up space in memory, so they are often considered to be a tradeoff of space vs. speed.  In most cases, that tradeoff is well worth it.
 
 The most common use of an index in a database is on the _primary key_ which is something unique (like an ID number) about the item stored in your database.  For cars it might be the VIN, for books the ISBN, etc, etc.  
+
+### Transaction
+
+A _transaction_ in database context is an operation or multiple operations that must all run successfully, otherwise none of them will be run at all.  
+
+To understand why transactions are necessary, the most common example is transferring money between accounts in a bank database.  A transfer operation includes both `remove money` from one account and `add money` to another.  If the `add money` operation fails for any reason, you also need the `remove money` operation to fail as well, otherwise you would end up with a pretty nasty scenario where the money is simply "gone".
+
+### Cursor
+
+A _cursor_ represents your current position when viewing the data in your database.  Cursors in IndexedDB can be used on entire object stores or even indexes that have been limited to a certain type of documents.  They offer the ability to iterate from one document to the next within the database rather than having to query all the data and store it in memory on the client application (in this case, our Javascript program).
 
 ## How to use IndexedDB
 
@@ -197,8 +197,36 @@ If you take each of the above code (every sample block in the examples into a `.
 
 ![IndexedDB Example](https://res.cloudinary.com/dqse2txyi/image/upload/v1637686766/blogs/indexeddb/indexeddb-example_lsbrvi.png)
 
+## Browsing your Database
 
-### Removing Data
+Browsers make it trivially simple to view the contents of your store.  First open up the developer console with `F12`.  
+
+On Chrome you will find it under the `Application` -> `Storage` -> `IndexedDB`.
+
+![IndexedDB Chrome](https://res.cloudinary.com/dqse2txyi/image/upload/v1637686833/blogs/indexeddb/indexeddb-chrome_lyisrf.png)
+
+On Firefox it's under `Storage` -> `Indexed DB`.
+
+![IndexedDB Firefox](https://res.cloudinary.com/dqse2txyi/image/upload/v1637686846/blogs/indexeddb/indexeddb-firefox_ahbaei.png)
+
+### Updating and Removing Data
+
+#### Update
+
+First you want to fetch the data you plan to update with `get` and then use the `put` method on the store to update the existing record.  _Put_ is a "insert _OR_ update" method in that it will either overwrite existing data, or insert new data if it doesn't already exist.
+
+```js
+const subaru = store.get(4);
+
+subaru.onsuccess= function () {
+  subaru.result.colour = "Green";
+  store.put(subaru.result);
+}
+```
+
+This will update the colour of the silver Subaru in your database to green.  
+
+#### Remove
 
 Data in IndexedDB can be deleted with an API similar to how it is queried.  The simplest method is to delete an entry directly by its known key:
 
@@ -213,9 +241,9 @@ deleteCar.onsuccess = function () {
 If you don't know the key and want to remove based on the value of one of your indexes, you can do that too:
 
 ```js
-const getRedCarKey = colourIndex.getKey(["Red"]);
+const redCarKey = colourIndex.getKey(["Red"]);
 
-getRedCarKey.onsuccess = function () {
+redCarKey.onsuccess = function () {
   const deleteCar = store.delete(redCarKey.result);
 
   deleteCar.onsuccess = function () {
@@ -224,20 +252,15 @@ getRedCarKey.onsuccess = function () {
 };
 ```
 
-For updating data instead of removing it entirely, you can simply re-insert the same data as long as it has the same key, with the new values you wish to be reflected.  
+_(If you want to try these out with the initial sample project, you can paste these code snippets immediately before this line:)_
 
+```js
+transaction.oncomplete = function () {
+```
 
-## Browsing your Database
+Your result will be:
 
-Browsers make it trivially simple to view the contents of your store.  First open up the developer console with `F12`.  
-
-On Chrome you will find it under the `Application` -> `Storage` -> `IndexedDB`.
-
-![IndexedDB Chrome](https://res.cloudinary.com/dqse2txyi/image/upload/v1637686833/blogs/indexeddb/indexeddb-chrome_lyisrf.png)
-
-On Firefox it's under `Storage` -> `Indexed DB`.
-
-![IndexedDB Firefox](https://res.cloudinary.com/dqse2txyi/image/upload/v1637686846/blogs/indexeddb/indexeddb-firefox_ahbaei.png)
+![Update IndexedDB Data](https://res.cloudinary.com/dqse2txyi/image/upload/v1637767489/blogs/indexeddb/indexeddb-update-data_pa5ctb.png)
 
 ## Limitations
 

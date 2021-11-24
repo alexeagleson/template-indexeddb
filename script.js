@@ -29,7 +29,7 @@ request.onsuccess = function () {
 
   const db = request.result;
   const transaction = db.transaction("cars", "readwrite");
-  
+
   const store = transaction.objectStore("cars");
   const colourIndex = store.index("cars_colour");
   const makeModelIndex = store.index("colour_and_make");
@@ -46,15 +46,38 @@ request.onsuccess = function () {
   const colourMakeQuery = makeModelIndex.get(["Blue", "Honda"]);
 
   idQuery.onsuccess = function () {
-    console.log('idQuery', idQuery.result);
+    console.log("idQuery", idQuery.result);
   };
 
   colourQuery.onsuccess = function () {
-    console.log('colourQuery', colourQuery.result);
+    console.log("colourQuery", colourQuery.result);
   };
 
   colourMakeQuery.onsuccess = function () {
-    console.log('colourMakeQuery', colourMakeQuery.result);
+    console.log("colourMakeQuery", colourMakeQuery.result);
+  };
+
+  const deleteCar = store.delete(1);
+
+  deleteCar.onsuccess = function () {
+    console.log("Red Toyota has been removed");
+  };
+
+  const redCarKey = colourIndex.getKey(["Red"]);
+
+  redCarKey.onsuccess = function () {
+    const deleteCar = store.delete(redCarKey.result);
+
+    deleteCar.onsuccess = function () {
+      console.log("Red car has been removed");
+    };
+  };
+
+  const subaru = store.get(4);
+
+  subaru.onsuccess = function () {
+    subaru.result.colour = "Green";
+    store.put(subaru.result);
   };
 
   transaction.oncomplete = function () {
