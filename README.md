@@ -286,8 +286,6 @@ Both javascript.info and MDN cover IndexedDB extremely in-depth, check them out 
 
 ## Wrapping Up
 
-You should now have a good understanding about how to create your own React component library.  Doing so can not only teach you a lot about how the Javascript package management ecosystem works, but it can be a great way to make code that you use across multiple projects easily available with a simple command.
-
 Please check some of my other learning tutorials.  Feel free to leave a comment or question and share with others if you find any of them helpful:
 
 - [How to Create and Publish a React Component Library ](https://dev.to/alexeagleson/how-to-create-and-publish-a-react-component-library-2oe)
